@@ -1,0 +1,25 @@
+name: EssentialsPlugin
+version: 1.0.0
+main: org.gabooj.EssentialsPlugin
+description: Gabe's essentials plugin
+author: PaperMC
+api-version: '1.21.3'
+commands:
+  chat:
+      description: A command to change how your chat is displayed. Use /chat for more information!
+      usage: /chat
+  claim:
+    description: A command to claim the chunk you are in, in the overworld. Use /claim to claim your chunk!
+    usage: /claim
+  unclaim:
+    description: A command to unclaim land in the overworld. Use /unclaim to unclaim your chunks.
+    usage: /unclaim
+  setclaim:
+    description: An OP command to set the claim of the chunk you are in. Use /setclaim <name> to set the claim of a given chunk!
+    usage: /setclaim
+  map:
+    description: A command to show a map of claimed chunks around you. Use /map or /map <radius> to display a map of claims.
+    usage: /map
+  friend:
+    description: A command to add/remove friends that will have full access to your claimed land.
+    usage: /friend
