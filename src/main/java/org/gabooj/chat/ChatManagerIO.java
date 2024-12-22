@@ -5,9 +5,63 @@ import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ChatManagerIO {
+
+    public static HashMap<String, List<String>> readMailData(JavaPlugin plugin, Server server) {
+        File file = new File(plugin.getDataFolder(), "mail.txt");
+        HashMap<String, List<String>> mail = new HashMap<>();
+
+        if (!file.exists()) {
+            server.broadcastMessage(ChatColor.RED + "Uh-oh! The server could not find the file that saves everyone's mail!");
+            return mail;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(";");
+                if (parts.length < 2) continue;
+                String name = parts[0];
+                List<String> playerMail = new ArrayList<>();
+
+                for (int i = 1; i < parts.length; i++) {
+                    String message = parts[i];
+                    if (!message.isEmpty()) playerMail.add(parts[i]);
+                }
+                mail.put(name, playerMail);
+            }
+        } catch (Exception e) {
+            server.broadcastMessage(ChatColor.RED + "Uh-oh! The server could not read the file that saves everyone's mail!");
+        }
+
+        return mail;
+    }
+
+    public static void writeMailData(HashMap<String, List<String>> mail, JavaPlugin plugin, Server server) {
+        if (!plugin.getDataFolder().exists()) {
+            plugin.getDataFolder().mkdirs();
+        }
+
+        File file = new File(plugin.getDataFolder(), "mail.txt");
+        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
+            for (String name : mail.keySet()) {
+                String str_to_save = name + ";";
+                List<String> playerMail = mail.get(name);
+
+                for (String str : playerMail) {
+                    str_to_save += str + ";";
+                }
+                writer.write(str_to_save + ";\n");
+            }
+        } catch (Exception e) {
+            server.broadcastMessage(ChatColor.RED + "Uh-oh! The server could not write to the file that saves everyone's mail!");
+            e.printStackTrace();
+        }
+    }
 
     public static HashMap<String, PlayerChatSettings> readData(JavaPlugin plugin, Server server) {
         File file = new File(plugin.getDataFolder(), "chatSettings.txt");

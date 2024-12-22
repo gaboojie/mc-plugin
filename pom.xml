@@ -13,24 +13,14 @@
             <id>papermc</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
-        <repository>
-            <id>gson</id>
-            <url>https://mvnrepository.com/artifact/com.google.code.gson/gson</url>
-        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.21.3-R0.1-SNAPSHOT</version> <!-- Use the latest version -->
+            <version>1.21.4-R0.1-20241215.095037-18</version> <!-- Use the latest version -->
             <scope>provided</scope> <!-- Ensures it's not included in the final build -->
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.10.1</version>  <!-- Use the latest version available -->
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

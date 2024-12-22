@@ -9,26 +9,80 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-public class ChatManagerCommands implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ChatCommands implements CommandExecutor {
 
     private final Server server;
     private final JavaPlugin plugin;
 
-    public ChatManagerCommands(Server server, JavaPlugin plugin) {
+    public ChatCommands(Server server, JavaPlugin plugin) {
         this.server = server;
         this.plugin = plugin;
     }
 
+    public void handleMailCommand(Player player, String[] args) {
+        if (args.length == 0) {
+            player.sendMessage(ChatColor.GREEN + "Mail usage:\n1. '/mail read' - To read your mail\n2. '/mail send <name> <msg>' - To send a message to <name>\n3. '/mail clear' - To clear your mail");
+            return;
+        }
+        String name = player.getName();
+        if (args[0].equalsIgnoreCase("read")) {
+            List<String> mail = ChatManager.playerMail.getOrDefault(name, new ArrayList<>());
+            if (mail.isEmpty()) {
+                player.sendMessage(ChatColor.GOLD + "You do not have any mail.");
+            } else {
+                StringBuilder to_send = new StringBuilder(ChatColor.GOLD + "Mail:\n");
+                for (int i = 0; i < mail.size(); i++) {
+                    to_send.append((i + 1)).append(". ").append(mail.get(i)).append("\n");
+                }
+                player.sendMessage(to_send.toString());
+            }
+        } else if (args[0].equalsIgnoreCase("send")) {
+            if (args.length < 3) {
+                player.sendMessage(ChatColor.GOLD + "To send mail, use '/mail send <name> <msg>'.");
+            } else {
+                String message = player.getName() + ":";
+                for (int i = 2; i < args.length; i++) {
+                    message += " " + args[i];
+                }
+                if (message.contains(";")) {
+                    player.sendMessage(ChatColor.RED + "Error: You cannot use a semicolon in your message (because semicolons are used in saving the mail).");
+                    return;
+                }
+                player.sendMessage(ChatColor.GOLD + "Sent message to " + args[1] + ".");
+                Player playerToMessage = getPlayerByName(args[1]);
+                if (playerToMessage != null) {
+                    playerToMessage.sendMessage(ChatColor.GOLD + player.getName() + " has sent you mail! Use '/mail read' to read your mail.");
+                }
+                List<String> messages = ChatManager.playerMail.getOrDefault(playerToMessage.getName(), new ArrayList<>());
+                messages.add(message);
+                ChatManager.playerMail.put(playerToMessage.getName(), messages);
+            }
+        } else if (args[0].equalsIgnoreCase("clear")) {
+            if (ChatManager.playerMail.containsKey(player.getName())) {
+                ChatManager.playerMail.remove(player.getName());
+            }
+            player.sendMessage(ChatColor.GOLD + "You have cleared all your mail.");
+        } else {
+            player.sendMessage(ChatColor.RED + "Error: The mail command must be used like '/mail read', '/mail send <name> <msg>', or '/mail clear'.");
+        }
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!label.equalsIgnoreCase("chat")) return false;
-
         // Handle terminal executing command
         if (!(sender instanceof Player)) {
             sender.sendMessage("You must be a player to issue this command!");
             return true;
         }
         Player player = (Player) sender;
+        if (label.equalsIgnoreCase("mail")) {
+            handleMailCommand(player, args);
+            return true;
+        }
+        if (!label.equalsIgnoreCase("chat")) return false;
 
         // Handle simple /chat command
         if (args.length == 0) {
@@ -257,6 +311,15 @@ public class ChatManagerCommands implements CommandExecutor {
 
     public void save() {
         ChatManagerIO.writeData(ChatManager.chatSettings, plugin, server);
+    }
+
+    public Player getPlayerByName(String name) {
+        for (Player player : server.getOnlinePlayers()) {
+            if (player.getName().equalsIgnoreCase(name)) {
+                return player;
+            }
+        }
+        return null;
     }
 
 }

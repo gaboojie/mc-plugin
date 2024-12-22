@@ -3,39 +3,45 @@ package org.gabooj.chat;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class ChatManager {
 
     private final JavaPlugin plugin;
     private final Server server;
-    private ChatManagerListener listener;
+    private ChatListener listener;
 
     public static HashMap<String, PlayerChatSettings> chatSettings = new HashMap<>();
 
     public static HashMap<String, ChatColor> formatNameToChatColor = new HashMap<>();
     public static HashMap<String, ChatColor> colorNameToChatColor = new HashMap<>();
 
+    public static HashMap<String, List<String>> playerMail = new HashMap<>();
+
     public ChatManager(JavaPlugin plugin, Server server) {
         initializeFormatAndColors();
 
         this.plugin = plugin;
         this.server = server;
-        this.listener = new ChatManagerListener(plugin, server);
+        this.listener = new ChatListener(plugin, server);
 
         // Register commands
-        plugin.getCommand("chat").setExecutor(new ChatManagerCommands(server, plugin));
+        ChatCommands commands = new ChatCommands(server, plugin);
+        plugin.getCommand("chat").setExecutor(commands);
+        plugin.getCommand("mail").setExecutor(commands);
     }
 
     public void onEnable() {
         chatSettings = ChatManagerIO.readData(plugin, server);
+        playerMail = ChatManagerIO.readMailData(plugin, server);
     }
 
     public void onDisable() {
         ChatManagerIO.writeData(chatSettings, plugin, server);
+        ChatManagerIO.writeMailData(playerMail, plugin, server);
     }
 
     public static PlayerChatSettings getChatSettingsForPlayer(Player player) {

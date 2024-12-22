@@ -4,17 +4,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Wall;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
@@ -22,12 +19,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class ShopManagerListener implements Listener {
+public class ShopListener implements Listener {
 
     private final JavaPlugin plugin;
     private final Server server;
 
-    public ShopManagerListener(JavaPlugin plugin_to_use, Server server_to_use) {
+    public ShopListener(JavaPlugin plugin_to_use, Server server_to_use) {
         plugin = plugin_to_use;
         server = server_to_use;
 

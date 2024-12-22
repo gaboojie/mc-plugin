@@ -3,9 +3,7 @@ package org.gabooj.landprotection;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.gabooj.chat.ChatManagerCommands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +22,7 @@ public class LandManager {
     // Can only claim in the first 1000 blocks;
 
     public static final int CHUNK_RADIUS = 625;
-    public final LandManagerListener listener;
+    public final LandListener listener;
     public static Server server = null;
     public static JavaPlugin plugin = null;
 
@@ -36,7 +34,7 @@ public class LandManager {
         // Register commands
         server = server_to_use;
         plugin = plugin_to_use;
-        LandManagerCommands executor = new LandManagerCommands(server, plugin);
+        LandCommands executor = new LandCommands(server, plugin);
 
         plugin.getCommand("claim").setExecutor(executor);
         plugin.getCommand("unclaim").setExecutor(executor);
@@ -44,7 +42,7 @@ public class LandManager {
         plugin.getCommand("map").setExecutor(executor);
         plugin.getCommand("friend").setExecutor(executor);
 
-        this.listener = new LandManagerListener(plugin, server);
+        this.listener = new LandListener(plugin, server);
     }
 
     public static int getPlayerID(String name) {

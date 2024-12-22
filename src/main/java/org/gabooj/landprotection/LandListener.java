@@ -9,15 +9,14 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class LandManagerListener implements Listener {
+public class LandListener implements Listener {
 
     private final JavaPlugin plugin;
     private final Server server;
 
-    public LandManagerListener(JavaPlugin plugin, Server server) {
+    public LandListener(JavaPlugin plugin, Server server) {
         this.plugin = plugin;
         this.server = server;
 

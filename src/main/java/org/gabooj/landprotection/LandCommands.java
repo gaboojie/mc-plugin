@@ -10,12 +10,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LandManagerCommands implements CommandExecutor {
+public class LandCommands implements CommandExecutor {
 
     private final Server server;
     private final JavaPlugin plugin;
 
-    public LandManagerCommands(Server server, JavaPlugin plugin) {
+    public LandCommands(Server server, JavaPlugin plugin) {
         this.server = server;
         this.plugin = plugin;
     }

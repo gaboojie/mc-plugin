@@ -23,3 +23,15 @@ commands:
   friend:
     description: A command to add/remove friends that will have full access to your claimed land.
     usage: /friend
+  info:
+    description: A command to list server information.
+    usage: /info
+  commands:
+    description: A command to list custom server commands.
+    usage: /commands
+  rules:
+    description: A command to list server rules.
+    usage: /rules
+  mail:
+    description: A command to send and receive mail, even when players are online.
+    usage: /mail

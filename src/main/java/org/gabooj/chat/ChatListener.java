@@ -2,20 +2,17 @@ package org.gabooj.chat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
-
-public class ChatManagerListener implements Listener {
+public class ChatListener implements Listener {
 
     private final JavaPlugin plugin;
     private final Server server;
 
-    public ChatManagerListener(JavaPlugin plugin, Server server) {
+    public ChatListener(JavaPlugin plugin, Server server) {
         this.plugin = plugin;
         this.server = server;
 
