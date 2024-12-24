@@ -264,14 +264,11 @@ public class MiscCommands implements CommandExecutor {
         // General Info
         player.sendMessage("\n");
         player.sendMessage(header("General Info"));
-        player.sendMessage(body("Use /spawn to get to spawn."));
         player.sendMessage(body("Seed: 307370674568038595"));
         player.sendMessage(body("Use /rules to get a list of server rules."));
         player.sendMessage(body("Use /commands to get a list of custom server commands."));
         player.sendMessage(body("Use /chat to change how your chat is displayed."));
         player.sendMessage(body("Use /home to teleport to your bed and /spawn to go to spawn."));
-        player.sendMessage(body("Farms that abuse game mechanics (like tnt duping/breaking unbreakable blocks) have been disabled."));
-        player.sendMessage(body("The server seed isn't shared, so tools like ChunkBase can't be used."));
         player.sendMessage(body("If you have any questions/want something to change about the server, ask the owner (DaGabeyWabey)."));
     }
 
