@@ -22,9 +22,12 @@ public class MiscCommands implements CommandExecutor {
     private final JavaPlugin plugin;
     private final Server server;
 
+    public static Location spawnLoc = null;
+
     public MiscCommands(JavaPlugin plugin, Server server) {
         this.plugin = plugin;
         this.server = server;
+        spawnLoc = new Location(server.getWorld("world"), 16, 134, 24);
     }
 
     @Override
@@ -41,12 +44,19 @@ public class MiscCommands implements CommandExecutor {
             rulesCommand(player);
         } else if (label.equalsIgnoreCase("commands")) {
             showCommandsCommand(player);
+        } else if (label.equalsIgnoreCase("spawn")) {
+            spawnCommand(player);
         } else if (label.equalsIgnoreCase("tpa")) {
             tpaCommand(player, args);
         } else if (label.equalsIgnoreCase("home")) {
             homeCommand(player);
         }
         return true;
+    }
+
+    public void spawnCommand(Player player) {
+        player.teleport(spawnLoc);
+        player.sendMessage(ChatColor.GOLD + "Teleported to spawn.");
     }
 
     public void homeCommand(Player player) {
@@ -254,6 +264,7 @@ public class MiscCommands implements CommandExecutor {
         // General Info
         player.sendMessage("\n");
         player.sendMessage(header("General Info"));
+        player.sendMessage(body("Use /spawn to get to spawn."));
         player.sendMessage(body("Seed: 307370674568038595"));
         player.sendMessage(body("Use /rules to get a list of server rules."));
         player.sendMessage(body("Use /commands to get a list of custom server commands."));
@@ -281,6 +292,7 @@ public class MiscCommands implements CommandExecutor {
         player.sendMessage(commandLine("/rules", "To list server rules"));
         player.sendMessage(commandLine("/commands", "To list server commands"));
         player.sendMessage(commandLine("/info", "To get server info"));
+        player.sendMessage(commandLine("/spawn", "To teleport to spawn"));
         player.sendMessage(commandLine("/tpa", "To request to teleport to a player"));
         player.sendMessage(commandLine("/home", "To teleport to your bed"));
 

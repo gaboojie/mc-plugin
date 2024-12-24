@@ -35,6 +35,9 @@ commands:
   mail:
     description: A command to send and receive mail, even when players are online.
     usage: /mail
+  spawn:
+    description: A command to teleport you to spawn.
+    usage: /spawn
   tpa:
     description: A command to request to teleport to other players.
     usage: /tpa
