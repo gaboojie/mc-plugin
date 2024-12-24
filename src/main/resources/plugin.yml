@@ -35,3 +35,9 @@ commands:
   mail:
     description: A command to send and receive mail, even when players are online.
     usage: /mail
+  tpa:
+    description: A command to request to teleport to other players.
+    usage: /tpa
+  home:
+    description: A command to teleport you to your bed.
+    usage: /home

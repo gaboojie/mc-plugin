@@ -2,10 +2,17 @@ package org.gabooj.chat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.gabooj.misc.MiscCommands;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ChatListener implements Listener {
 
@@ -31,6 +38,18 @@ public class ChatListener implements Listener {
 
         server.broadcastMessage(message);
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerLogIn(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        HashMap<String, List<String>> playerMail = ChatManager.playerMail;
+        List<String> mail = playerMail.getOrDefault(player.getName(), new ArrayList<>());
+        if (mail.isEmpty()) {
+            player.sendMessage(ChatColor.GOLD + "You don't have any mail.");
+        } else {
+            player.sendMessage(ChatColor.GOLD + "You have unread mail! Use '/mail read' to read your mail!");
+        }
     }
 
     public String combineColorWithFormat(ChatColor color, ChatColor format) {

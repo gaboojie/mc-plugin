@@ -1,7 +1,11 @@
 package org.gabooj.misc;
 
 import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class MiscManager {
 
@@ -19,6 +23,8 @@ public class MiscManager {
         plugin.getCommand("info").setExecutor(executor);
         plugin.getCommand("rules").setExecutor(executor);
         plugin.getCommand("commands").setExecutor(executor);
+        plugin.getCommand("tpa").setExecutor(executor);
+        plugin.getCommand("home").setExecutor(executor);
     }
 
     public void onEnable() {
