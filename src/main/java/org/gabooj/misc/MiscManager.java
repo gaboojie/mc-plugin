@@ -26,6 +26,7 @@ public class MiscManager {
         plugin.getCommand("spawn").setExecutor(executor);
         plugin.getCommand("tpa").setExecutor(executor);
         plugin.getCommand("home").setExecutor(executor);
+        plugin.getCommand("showhand").setExecutor(executor);
     }
 
     public void onEnable() {

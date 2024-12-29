@@ -1,19 +1,20 @@
 package org.gabooj.misc;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Server;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MiscCommands implements CommandExecutor {
 
@@ -50,8 +51,68 @@ public class MiscCommands implements CommandExecutor {
             tpaCommand(player, args);
         } else if (label.equalsIgnoreCase("home")) {
             homeCommand(player);
+        } else if (label.equalsIgnoreCase("showhand")) {
+            showHandCommand(player);
         }
         return true;
+    }
+
+    public void showHandCommand(Player player) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (item == null || item.getType() == Material.AIR) {
+            player.sendMessage(ChatColor.RED + "You must hold an item to show!");
+            return;
+        }
+        String itemName = makeSingular(formatString(item.getType().toString()), (item.getAmount() == 1));
+        String toDisplay = ChatColor.GOLD + player.getName() + " shows their " + item.getAmount() + " " + itemName;
+
+        // Show name
+        ItemMeta meta = item.getItemMeta();
+        if (meta.hasDisplayName()) {
+            toDisplay += ", " + ChatColor.ITALIC + "'" + meta.getDisplayName() + "'" + ChatColor.RESET + ChatColor.GOLD;
+        }
+        toDisplay += ".";
+
+        // Show enchants
+        if (meta.hasEnchants()) {
+            toDisplay += ChatColor.LIGHT_PURPLE + "\nWith Enchant(s): ";
+            for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
+                NamespacedKey enchantKey = entry.getKey().getKey();
+                String enchantName = enchantKey.toString();
+                if (enchantName.startsWith("minecraft:")) {
+                    enchantName = enchantName.substring(10);
+                }
+                toDisplay += formatString(enchantName) + " " + entry.getValue() + ", ";
+            }
+            toDisplay = toDisplay.substring(0, toDisplay.length()-2);
+        }
+        server.broadcastMessage(toDisplay);
+    }
+
+    public String makeSingular(String str, boolean makeSingular) {
+        if (makeSingular && str.endsWith("s")) {
+            return str.substring(0, str.length()-1);
+        } else return str;
+    }
+
+    public String formatString(String str) {
+        boolean capitalizeNext = true;
+        StringBuilder toReturn = new StringBuilder();
+        for (char c : str.toCharArray()) {
+            if (capitalizeNext) {
+                toReturn.append((c + "").toUpperCase());
+                capitalizeNext = false;
+                continue;
+            }
+
+            if (c == '_') {
+                capitalizeNext = true;
+                toReturn.append(" ");
+            } else {
+                toReturn.append((c + "").toLowerCase());
+            }
+        }
+        return toReturn.toString();
     }
 
     public void spawnCommand(Player player) {

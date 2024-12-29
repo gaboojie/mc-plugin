@@ -44,3 +44,6 @@ commands:
   home:
     description: A command to teleport you to your bed.
     usage: /home
+  showhand:
+    description: A command to show the item held in your hand to the server.
+    usage: /showhand
