@@ -69,12 +69,18 @@ public class LandListener implements Listener {
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
         InventoryType type = event.getInventory().getType();
-        if (type != InventoryType.ENCHANTING && type != InventoryType.CRAFTING && type != InventoryType.GRINDSTONE
-                && type != InventoryType.CREATIVE && type != InventoryType.WORKBENCH && type != InventoryType.PLAYER && type != InventoryType.ENDER_CHEST) {
+        if (!canInventoryBeUsedEverywhere(type)) {
             if (!LandManager.doesPlayerHaveAccessToChunkAt(event.getPlayer().getLocation(), event.getPlayer().getName())) {
                 event.setCancelled(true);
                 event.getPlayer().sendMessage(ChatColor.RED + "You do not own and cannot open that in this land.");
             }
         }
+    }
+
+    public boolean canInventoryBeUsedEverywhere(InventoryType type) {
+        return switch (type) {
+            case ENCHANTING, CRAFTING, GRINDSTONE, CREATIVE, WORKBENCH, PLAYER, ENDER_CHEST, ANVIL, CARTOGRAPHY, COMPOSTER, JUKEBOX, MERCHANT, LOOM, STONECUTTER, SMITHING, LECTERN -> true;
+            default -> false;
+        };
     }
 }
