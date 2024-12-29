@@ -46,8 +46,7 @@ public class LandCommands implements CommandExecutor {
 
     public void onFriendCommand(Player player, String label, String[] args) {
         if (args.length == 0) {
-            player.sendMessage(ChatColor.BLUE + "The friend command is used to add/remove other players to your claimed lands." +
-                    "Use /friend add <name> or /friend remove <name> to add/remove friends.");
+            player.sendMessage(ChatColor.GOLD + "Use '/friend add <name>' or '/friend remove <name>' to add or remove friends. Use '/friend list' to show a list of all friends.");
             return;
         }
         int playerID = LandManager.getPlayerID(player.getName());
@@ -57,6 +56,11 @@ public class LandCommands implements CommandExecutor {
                 player.sendMessage(ChatColor.RED + "You must specify a player's name!");
             } else {
                 String name = args[1];
+                if (name.equalsIgnoreCase(player.getName())) {
+                    player.sendMessage(ChatColor.RED + "You can only be friends with other people, not yourself!");
+                    return;
+                }
+
                 if (isPlayerOnline(name, player.getServer())) {
                     int friendID = LandManager.getPlayerID(name);
                     if (info.friends.contains(friendID)) {
@@ -98,6 +102,7 @@ public class LandCommands implements CommandExecutor {
 
             List<Integer> friends = info.friends;
             for (int friendID : friends) {
+                player.sendMessage(friendID + "");
                 PlayerLandInfo friendInfo = LandManager.playerInfo.get(friendID);
                 friendsStr += friendInfo.name + ", ";
             }

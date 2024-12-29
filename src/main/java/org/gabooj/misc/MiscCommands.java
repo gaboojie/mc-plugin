@@ -19,16 +19,14 @@ import java.util.Map;
 public class MiscCommands implements CommandExecutor {
 
     public static final HashMap<Player, List<Player>> teleports = new HashMap<>();
+    public static final HashMap<String, Location> warps = new HashMap<>();
 
     private final JavaPlugin plugin;
     private final Server server;
 
-    public static Location spawnLoc = null;
-
     public MiscCommands(JavaPlugin plugin, Server server) {
         this.plugin = plugin;
         this.server = server;
-        spawnLoc = new Location(server.getWorld("world"), 16, 134, 24);
     }
 
     @Override
@@ -45,17 +43,83 @@ public class MiscCommands implements CommandExecutor {
             rulesCommand(player);
         } else if (label.equalsIgnoreCase("commands")) {
             showCommandsCommand(player);
-        } else if (label.equalsIgnoreCase("spawn")) {
-            spawnCommand(player);
         } else if (label.equalsIgnoreCase("tpa")) {
             tpaCommand(player, args);
         } else if (label.equalsIgnoreCase("home")) {
             homeCommand(player);
         } else if (label.equalsIgnoreCase("showhand")) {
             showHandCommand(player);
+        } else if (label.equalsIgnoreCase("warp")) {
+            warpCommand(player, args);
         }
         return true;
     }
+
+    public void warpCommand(Player player, String[] args) {
+        if (args.length == 0 || args[0].equalsIgnoreCase("list")) {
+            if (!warps.isEmpty()) {
+                String warpsStr = ChatColor.GOLD + "Warps: ";
+                for (String str : warps.keySet()) {
+                    warpsStr += str + ", ";
+                }
+                warpsStr = warpsStr.substring(0, warpsStr.length()-2);
+                player.sendMessage(warpsStr);
+                player.sendMessage(ChatColor.GOLD + "Use '/warp <name>' to teleport to that warp's location.");
+            } else {
+                player.sendMessage(ChatColor.RED + "Unfortunately, no warps exist yet.");
+            }
+        } else if (args[0].equalsIgnoreCase("add")) {
+            if (!player.isOp()) {
+                player.sendMessage(ChatColor.RED + "You must be an admin to use this command.");
+                return;
+            }
+
+            if (args.length > 1) {
+                String warpName = args[1];
+                // Does warp exist
+                for (String name : warps.keySet()) {
+                    if (name.equalsIgnoreCase(warpName)) {
+                        player.sendMessage(ChatColor.RED + "That warp name already exists!");
+                        return;
+                    }
+                }
+
+                // Add warp
+                player.sendMessage(ChatColor.GOLD + "'" + warpName + "' was added as a warp location.");
+                warps.put(warpName, player.getLocation());
+            } else {
+                player.sendMessage(ChatColor.RED + "To add a warp, use /warp add <warp name>.");
+            }
+        } else if (args[0].equalsIgnoreCase("remove")) {
+            if (!player.isOp()) {
+                player.sendMessage(ChatColor.RED + "You must be an admin to use this command.");
+                return;
+            }
+
+            if (args.length > 1) {
+                String warpName = args[1];
+
+                if (warps.containsKey(warpName)) {
+                    player.sendMessage(ChatColor.GOLD + "'" + warpName + "' was removed as a warp location.");
+                    warps.remove(warpName);
+                } else {
+                    player.sendMessage(ChatColor.RED + "That warp name does not exist!");
+                }
+            } else {
+                player.sendMessage(ChatColor.RED + "To add a warp, use /warp add <warp name>.");
+            }
+        } else {
+            String warpName = args[0];
+            if (warps.containsKey(warpName)) {
+                Location loc = warps.get(warpName);
+                player.teleport(loc);
+                player.sendMessage(ChatColor.GOLD + "Teleported to " + warpName + ".");
+            } else {
+                player.sendMessage(ChatColor.RED + "That warp does not exist!");
+            }
+        }
+    }
+
 
     public void showHandCommand(Player player) {
         ItemStack item = player.getInventory().getItemInMainHand();
@@ -113,11 +177,6 @@ public class MiscCommands implements CommandExecutor {
             }
         }
         return toReturn.toString();
-    }
-
-    public void spawnCommand(Player player) {
-        player.teleport(spawnLoc);
-        player.sendMessage(ChatColor.GOLD + "Teleported to spawn.");
     }
 
     public void homeCommand(Player player) {
@@ -329,7 +388,7 @@ public class MiscCommands implements CommandExecutor {
         player.sendMessage(body("Use /rules to get a list of server rules."));
         player.sendMessage(body("Use /commands to get a list of custom server commands."));
         player.sendMessage(body("Use /chat to change how your chat is displayed."));
-        player.sendMessage(body("Use /home to teleport to your bed and /spawn to go to spawn."));
+        player.sendMessage(body("Use /home to teleport to your bed and /warp spawn to go to spawn."));
         player.sendMessage(body("If you have any questions/want something to change about the server, ask the owner (DaGabeyWabey)."));
     }
 
@@ -350,9 +409,10 @@ public class MiscCommands implements CommandExecutor {
         player.sendMessage(commandLine("/rules", "To list server rules"));
         player.sendMessage(commandLine("/commands", "To list server commands"));
         player.sendMessage(commandLine("/info", "To get server info"));
-        player.sendMessage(commandLine("/spawn", "To teleport to spawn"));
+        player.sendMessage(commandLine("/warp", "To teleport to warp locations, like spawn"));
         player.sendMessage(commandLine("/tpa", "To request to teleport to a player"));
         player.sendMessage(commandLine("/home", "To teleport to your bed"));
+        player.sendMessage(commandLine("/showhand", "To show the server the item that is held in your main hand."));
 
         player.sendMessage(ChatColor.GREEN + "\nIf you would like extra commands to be added, ask the owner (DaGabeyWabey).");
     }

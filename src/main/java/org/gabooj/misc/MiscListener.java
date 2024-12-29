@@ -53,7 +53,9 @@ public class MiscListener implements Listener {
             // First time logging in
             server.broadcastMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "A new player has joined!\nWelcome " + player.getName() + " to the server!");
             player.sendMessage(ChatColor.GREEN + "Use /info to get started!");
-            player.teleport(MiscCommands.spawnLoc);
+            if (MiscCommands.warps.containsKey("spawn")) {
+                player.teleport(MiscCommands.warps.get("spawn"));
+            }
             event.setJoinMessage("");
         }
     }

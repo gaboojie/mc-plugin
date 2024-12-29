@@ -23,18 +23,19 @@ public class MiscManager {
         plugin.getCommand("info").setExecutor(executor);
         plugin.getCommand("rules").setExecutor(executor);
         plugin.getCommand("commands").setExecutor(executor);
-        plugin.getCommand("spawn").setExecutor(executor);
+        plugin.getCommand("warp").setExecutor(executor);
         plugin.getCommand("tpa").setExecutor(executor);
         plugin.getCommand("home").setExecutor(executor);
         plugin.getCommand("showhand").setExecutor(executor);
     }
 
     public void onEnable() {
-
+        MiscManagerIO.readWarpInfo(plugin, server);
     }
 
     public void onDisable() {
         listener.onDisable();
+        MiscManagerIO.writeWarpInfo(plugin, server);
     }
 
 }

@@ -123,8 +123,10 @@ public class LandManagerIO {
                 int id = Integer.parseInt(parts[0]);
                 String name = parts[1];
                 List<Integer> friends = new ArrayList<>();
-                for (int i = 2; i < parts.length-1; i++) {
-                    friends.add(Integer.parseInt(parts[i]));
+                for (int i = 2; i < parts.length; i++) {
+                    String playerID = parts[i];
+                    if (playerID.isEmpty()) continue;
+                    friends.add(Integer.parseInt(playerID));
                 }
 
                 PlayerLandInfo info = new PlayerLandInfo(name, friends);
