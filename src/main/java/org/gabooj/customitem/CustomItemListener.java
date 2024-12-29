@@ -194,7 +194,7 @@ public class CustomItemListener implements Listener {
 
     public boolean isLog(Block block) {
         return switch (block.getType()) {
-            case OAK_LOG, SPRUCE_LOG, CHERRY_LOG, BIRCH_LOG, JUNGLE_LOG, ACACIA_LOG, DARK_OAK_LOG, CRIMSON_STEM, WARPED_STEM, MANGROVE_LOG -> true;
+            case OAK_LOG, SPRUCE_LOG, CHERRY_LOG, BIRCH_LOG, JUNGLE_LOG, ACACIA_LOG, DARK_OAK_LOG, CRIMSON_STEM, WARPED_STEM, MANGROVE_LOG, MANGROVE_ROOTS, MUDDY_MANGROVE_ROOTS, PALE_OAK_LOG -> true;
             default -> false;
         };
     }

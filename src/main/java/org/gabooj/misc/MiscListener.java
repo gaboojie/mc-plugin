@@ -4,6 +4,7 @@ import org.bukkit.*;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -36,11 +37,13 @@ public class MiscListener implements Listener {
         server.getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.hasPlayedBefore()) {
             // Logged in before
+            player.sendMessage(ChatColor.GREEN + "============\nRecent server updates:\n1. Fixed issues in saving friend data, so you shouldn't lose friends anymore.\n2. Added the /warp command, which you can now use to /warp to spawn.\n3. Added the /showhand command.\n4. Villagers in claimed land can now be interacted with.\n5. Added more logs to the Tree Feller.");
+            player.sendMessage(ChatColor.GREEN + "If you have any suggestions for items/commands to add, tell Gabe (DaGabeyWabey).\n============");
             player.sendMessage(ChatColor.GREEN + "Welcome back to the server!");
 
             for (Player otherPlayer : server.getOnlinePlayers()) {
