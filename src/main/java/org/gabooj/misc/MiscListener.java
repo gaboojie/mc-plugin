@@ -42,7 +42,7 @@ public class MiscListener implements Listener {
         Player player = event.getPlayer();
         if (player.hasPlayedBefore()) {
             // Logged in before
-            player.sendMessage(ChatColor.GREEN + "============\nRecent server updates:\n1. Fixed issues in saving friend data, so you shouldn't lose friends anymore.\n2. Added the /warp command, which you can now use to /warp to spawn.\n3. Added the /showhand command.\n4. Villagers in claimed land can now be interacted with.\n5. Added more logs to the Tree Feller.");
+            player.sendMessage(ChatColor.GREEN + "============\nRecent server updates:\n1. Added the Pokeball, an item that lets you convert mobs into their spawn eggs. Does not work with villagers.\n2. Fixed bug where some mobs had naming errors.\n3. Added the /showhand command.");
             player.sendMessage(ChatColor.GREEN + "If you have any suggestions for items/commands to add, tell Gabe (DaGabeyWabey).\n============");
             player.sendMessage(ChatColor.GREEN + "Welcome back to the server!");
 

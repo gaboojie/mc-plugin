@@ -371,6 +371,7 @@ public class MiscCommands implements CommandExecutor {
         player.sendMessage(ChatColor.GOLD + " Kinetic Elytra" + ChatColor.GREEN + " - An elytra that removes slamming into wall damage, so players don't randomly die 10,000 blocks in the Nether and quit (@Colin).");
         player.sendMessage(ChatColor.GOLD + " Tombstone" + ChatColor.GREEN + " - Craftable item that will place a chest with your loot where you die (@Alex).");
         player.sendMessage(ChatColor.GOLD + " Shulker Box" + ChatColor.GREEN + " - Right click any shulker box in the air to open it's inventory (@Alex).");
+        player.sendMessage(ChatColor.GOLD + " Pokeball" + ChatColor.GREEN + " - Right click on a mob to convert the mob into a spawn egg!");
 
         // Hard++ Info
         player.sendMessage("\n");

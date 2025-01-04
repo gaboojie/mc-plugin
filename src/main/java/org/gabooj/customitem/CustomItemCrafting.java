@@ -19,7 +19,7 @@ public class CustomItemCrafting {
     private final JavaPlugin plugin;
     private final Server server;
 
-    public static NamespacedKey buildersWandKey, treeFellerDiamondKey, treeFellerNetheriteKey, gogglesKey, kineticKey, tombstoneKey;
+    public static NamespacedKey pokeballKey, buildersWandKey, treeFellerDiamondKey, treeFellerNetheriteKey, gogglesKey, kineticKey, tombstoneKey;
 
     public CustomItemCrafting(JavaPlugin plugin, Server server) {
         this.plugin = plugin;
@@ -34,6 +34,31 @@ public class CustomItemCrafting {
         addKineticRecipe();
         addNightVisionGoogles();
         addStorageRecipe();
+        addPokeballRecipe();
+    }
+
+    public void addPokeballRecipe() {
+        // Pokeball
+        ItemStack result = new ItemStack(Material.CLAY_BALL);
+        result.addUnsafeEnchantment(Enchantment.BINDING_CURSE, 1);
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(ChatColor.LIGHT_PURPLE + "Right click an entity to sacrifice the entity for a spawn egg of the same type.");
+        lore.add(ChatColor.LIGHT_PURPLE + "[Single-use]");
+
+        ItemMeta meta = result.getItemMeta();
+        meta.setLore(lore);
+        meta.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Pokeball");
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        result.setItemMeta(meta);
+
+        pokeballKey = new NamespacedKey(plugin, "Pokeball");
+        ShapedRecipe recipe = new ShapedRecipe(pokeballKey, result);
+
+        // Add recipe
+        recipe.shape("aaa", "aba", "aaa");
+        recipe.setIngredient('a', new RecipeChoice.MaterialChoice(Material.DIAMOND));
+        recipe.setIngredient('b', new RecipeChoice.MaterialChoice(Material.CLAY_BALL));
+        server.addRecipe(recipe);
     }
 
     public void addStorageRecipe() {
